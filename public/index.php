@@ -8,13 +8,23 @@
 
 require_once __DIR__ . '/../bootstrap.php';
 
+use Code\Sis\Entity\Cliente;
+use Code\Sis\Mapper\ClienteMapper;
 use Symfony\Component\HttpFoundation\Response;
+use Code\Sis\Service\ClienteService;
 
 $response = new Response();
 
+$app['clienteService'] = function () {
+    $clienteEntity = new Cliente();
+    $clienteMapper = new ClienteMapper();
 
+    $clienteService = new ClienteService($clienteEntity, $clienteMapper);
+    return $clienteService;
 
-$app->get('/', function ()  {
+};
+
+$app->get('/', function () {
     return "Olá Mundo sem response";
 });
 
@@ -28,37 +38,20 @@ $app->get('/ola/{nome}', function ($nome) {
     return "Olá {$nome}";
 });
 
-/*
- * TAREFA 1
- * Nessa fase do projeto, você instalará o Silex e criará 1 rotas principal,
- * apenas para garantir que tudo está configurado e funcionando.
+$app->get('/cliente', function () use ($app) {
+    $dados['nome'] = "Claus Perboni";
+    $dados['email'] = "claus@email.com";
 
-1)Rota: /clientes
+    //Desacoplar estas instâncias
+//    $clienteEntity = new Cliente();
+//    $clienteMapper = new ClienteMapper();
+//
+//    $clienteService = new ClienteService($clienteEntity, $clienteMapper);
+//    $result = $clienteService->insert($dados);
 
-Com a rota /clientes, faça a simulação da listagem de clientes com
-Nome, Email e CPF/CNPJ vindo de um array. O formato de exibição deve ser json.
- *
- */
+    $result = $app['clienteService']->insert($dados);
 
-
-
-$app->get('/clientes/{id}', function () use ($app) {
-
-    $cliente = array (
-        1 => array (
-            'nome' => 'Claudinei Perboni',
-            'email' => 'cperbony@gmail.com',
-            'cpf' => '1234567890'
-        ),
-    );
-
-    if(!$cliente) {
-        $error = array('message' => 'Cliente não encontrado');
-
-        return $app->json($error, 404);
-    }
-    return $app->json($cliente);
+    return $app->json($result);
 });
-
 
 $app->run();
