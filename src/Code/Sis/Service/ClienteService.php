@@ -33,6 +33,7 @@ class ClienteService
         $clienteEntity = $this->cliente;
         $clienteEntity->setNome($data['nome']);
         $clienteEntity->setEmail($data['email']);
+        $clienteEntity->setCpf($data['cpf']);
 
         $mapper =  $this->clienteMapper;
         $result = $mapper->insert($clienteEntity);

@@ -54,4 +54,16 @@ $app->get('/cliente', function () use ($app) {
     return $app->json($result);
 });
 
+$app->get('/clientes', function () use ($app) {
+    $dados['nome'] = "Claus Perboni";
+    $dados['email'] = "claus@email.com";
+    $dados['cpf'] = "1234567890";
+
+    if (!$dados) {
+        return $error = array('message' => 'Cliente não encontrado');
+    }
+    $result = $app['clienteService']->insert($dados);
+    return $app->json($result);
+});
+
 $app->run();

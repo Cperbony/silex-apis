@@ -13,6 +13,7 @@ class Cliente
 {
     private $nome;
     private $email;
+    private $cpf;
 
     /**
      * @return mixed
@@ -46,6 +47,20 @@ class Cliente
         $this->email = $email;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getCpf()
+    {
+        return $this->cpf;
+    }
 
+    /**
+     * @param mixed $cpf
+     */
+    public function setCpf($cpf): void
+    {
+        $this->cpf = $cpf;
+    }
 
 }

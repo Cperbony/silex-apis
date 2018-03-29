@@ -16,7 +16,8 @@ class ClienteMapper
     {
         return [
             'nome' => 'Cliente 1',
-            'name' => 'email@claus.com'
+            'email' => 'email@claus.com',
+            'cpf' => '1234567890'
         ];
     }
 }
