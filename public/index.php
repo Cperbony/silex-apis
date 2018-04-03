@@ -66,4 +66,31 @@ $app->get('/clientes', function () use ($app) {
     return $app->json($result);
 });
 
+$app['produtoService'] = function () use($app) {
+    $con = new \Code\Sis\DB\Connection();
+
+    $produtoEntity = new \Code\Sis\Entity\Produto();
+    $produtoMapper = new \Code\Sis\Mapper\ProdutoMapper($con);
+
+    return new \Code\Sis\Service\ProdutoService($produtoEntity, $produtoMapper);
+};
+
+$app->get('/', function () {
+  return "Produtos /produtos";
+});
+
+$app->get('/produtos', function() use ($app) {
+
+    $dados['nome'] = "Curso Code Education Silex Api2";
+    $dados['valor'] = 5555.22;
+    $dados['descricao'] = "Aprendendo a desenvolver API com Silex 1.33";
+
+    if(!$dados) {
+        return $error = array('message' => 'Produto não encontrado');
+    }
+
+    $result = $app['produtoService']->insert($dados);
+    return $app->json($result);
+});
+
 $app->run();
